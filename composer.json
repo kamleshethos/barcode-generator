@@ -20,7 +20,7 @@
     },
     "autoload": {
         "psr-4": { 
-            "Eforce\\": "Eforce/" 
+            "Eforce\\BarcodeBundle\\": "BarcodeBundle/" 
         }
     }
 }

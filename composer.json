@@ -2,9 +2,9 @@
     "type": "library",
     "name": "eforce/barcode",
     "license": "MIT",
-    "description": "Fork do eforce/barcode que foi descontinuado",
-    "keywords": ["barcode","lessclick-system"],
-    "homepage": "https://bitbucket.org/lessclick-systems/barcode.git",
+    "description": "Fork do eforce/barcode for contibution",
+    "keywords": ["barcode","eforce"],
+    "homepage": "https://github.com/kamleshethos/barcode-generator",
     "authors": [
         {
             "name": "Kamlesh",

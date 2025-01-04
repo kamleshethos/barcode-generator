@@ -33,7 +33,7 @@ $qrCode
 echo '<img src="data:'.$qrCode->getContentType().';base64,'.$qrCode->generate().'" />';
 ```
 ### Sample Image - QrCode:
-![Eforce QrCode Generator](/Eforce/BarcodeBundle/Resources/image/sample_qrcode.png?raw=true)
+![Eforce QrCode Generator](/BarcodeBundle/Resources/image/sample_qrcode.png?raw=true)
 
 ### Example - Code128:
 ```php

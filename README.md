@@ -35,6 +35,30 @@ echo '<img src="data:'.$qrCode->getContentType().';base64,'.$qrCode->generate().
 ### Sample Image - QrCode:
 ![Eforce QrCode Generator](/BarcodeBundle/Resources/image/sample_qrcode.png?raw=true)
 
+### Example - QrCode With Logo:
+```php
+use Eforce\BarcodeBundle\Utils\QrCode;
+
+$qrCode = new QrCode();
+$qrCode
+    ->setText('QR code by Eforce.in')
+    ->setSize(300)
+    ->setPadding(10)
+    ->setErrorCorrection('high')
+    ->setForegroundColor(array('r' => 0, 'g' => 0, 'b' => 0, 'a' => 0))
+    ->setBackgroundColor(array('r' => 255, 'g' => 255, 'b' => 255, 'a' => 0))
+    ->setLabel('Scan Qr Code')
+    ->setLabelFontSize(16)
+    ->setImageType(QrCode::IMAGE_TYPE_PNG)
+    ->setLogoImagePath(WWW_ROOT.'img/eLogo.png')
+    ->setLogoImagePercentage(20);
+;
+echo '<img src="data:'.$qrCode->getContentType().';base64,'.$qrCode->generate().'" />';
+```
+### Sample Image - QrCode:
+![Eforce QrCode Generator](/BarcodeBundle/Resources/image/qr_code_with_logo.png?raw=true)
+
+
 ### Example - Code128:
 ```php
 use Eforce\BarcodeBundle\Utils\BarcodeGenerator;

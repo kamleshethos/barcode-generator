@@ -830,7 +830,7 @@ class QrCode
     {
         $this->create();
 
-        if(!empty($this->logo_image_path)){
+        if(!empty($this->logo_image_path) && file_exists($this->logo_image_path)) {
             $this->drawLogoOnImage();
         }
 

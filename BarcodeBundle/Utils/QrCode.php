@@ -2,7 +2,7 @@
 /**
  * QrCode
  * @author  Kamlesh <kamlesh.verma@ethoswatches.com>
- * @package https://github.com/kamleshethos/barcode-generator  
+ * @package https://github.com/kamleshethos/barcode-generator
  */
 
 namespace Eforce\BarcodeBundle\Utils;
@@ -140,6 +140,12 @@ class QrCode
 
     /** @var string */
     protected $image_path;
+
+    /** @var string */
+    protected $logo_image_path=null;
+
+    /** @var string */
+    protected $logo_size_percentage= 30;
 
     /** @var string */
     protected $path;
@@ -331,7 +337,6 @@ class QrCode
 
         return $this;
     }
-
     /**
      * Return path to the images directory.
      *
@@ -340,6 +345,47 @@ class QrCode
     public function getImagePath()
     {
         return $this->image_path;
+    }
+
+    /**
+     * Set path to the logo images directory.
+     *
+     * @param string $logo_image_path Image directory
+     *
+     * @return QrCode
+     */
+    public function setLogoImagePath($logo_image_path)
+    {
+        $this->logo_image_path = $logo_image_path;
+        return $this;
+    }
+
+    /**
+     * Return path to the logo images directory.
+     *
+     * @return string
+     */
+    public function getLogoImagePath()
+    {
+        return $this->logo_image_path;
+    }
+
+    /**
+     * @param $logo_size_percentage
+     * @return $this
+     */
+    public function setLogoImagePercentage($logo_size_percentage)
+    {
+        $this->logo_size_percentage = $logo_size_percentage;
+        return $this;
+    }
+
+    /**
+     * @return int|string
+     */
+    public function getLogoImagePercentage()
+    {
+        return $this->logo_size_percentage;
     }
 
     /**
@@ -748,7 +794,7 @@ class QrCode
 
         return $this;
     }
-    
+
     /**
      * Generate base64 image
      * @return type
@@ -783,6 +829,10 @@ class QrCode
     public function get($format = null)
     {
         $this->create();
+
+        if(!empty($this->logo_image_path)){
+            $this->drawLogoOnImage();
+        }
 
         if ($format == 'jpg') {
             $format = 'jpeg';
@@ -1425,6 +1475,7 @@ class QrCode
             imagerectangle($output_image, $border_width, $border_width, $border_height, $border_height, $border_color);
         }
 
+
         if (!empty($this->label)) {
             // Label horizontal alignment
             switch ($this->label_halign) {
@@ -1510,7 +1561,47 @@ class QrCode
                 imagecolorset($output_image, $index, $this->color_foreground['r'], $this->color_foreground['g'], $this->color_foreground['b']);
             }
         }
-        
+
         $this->image = $output_image;
+    }
+
+    /**
+     * Draw the logo on image
+     * @param $logo_image_path
+     * @return void
+     */
+    public function drawLogoOnImage(){
+        $logo_perc_decimal = ($this->logo_size_percentage/100);
+        if (!empty($logo_perc_decimal)) {
+            $base_image = $this->image;
+            $logo_image = imagecreatefrompng($this->logo_image_path);
+            // Get the dimensions of the base image and the logo
+            $base_width = imagesx($base_image);
+            $base_height = imagesy($base_image);
+            $logo_width = imagesx($logo_image);
+            $logo_height = imagesy($logo_image);
+            // Calculate the new size for the logo (30% of base image)
+            $logo_new_width = $base_width * $logo_perc_decimal;
+            $logo_new_height = $logo_height * ($logo_new_width / $logo_width);
+            // Calculate the position to center the logo
+            $center_x = ($base_width - $logo_new_width) / 2;
+            $center_y = ($base_height - $logo_new_height) / 2;
+
+            // Create a blank image with the same dimensions as the base image
+            $output_image = imagecreatetruecolor($base_width, $base_height);
+
+            // Copy the base image onto the output image
+            imagecopyresampled($output_image, $base_image, 0, 0, 0, 0, $base_width, $base_height, $base_width, $base_height);
+
+            // Copy the resized logo onto the output image
+            imagecopyresampled(
+                $output_image, $logo_image,
+                $center_x, $center_y,      // Destination (centered)
+                0, 0,                      // Source (top-left corner of logo)
+                $logo_new_width, $logo_new_height,  // Destination width and height
+                $logo_width, $logo_height           // Source width and height
+            );
+            $this->image = $output_image;
+        }
     }
 }
